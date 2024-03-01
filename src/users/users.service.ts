@@ -5,10 +5,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private usersModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private usersModel: Model<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async getAllUsers(): Promise<User[]> {
     try {
@@ -38,8 +42,10 @@ export class UsersService {
       const newUser = new this.usersModel({
         ...userDto,
         password: hashPassword,
-      });
-      return await newUser.save();
+      }).save();
+
+      //const token = this.jwtService.sign({ email: userDto.email });
+      return newUser;
     } catch (e) {
       throw new Error(e);
     }
@@ -57,6 +63,16 @@ export class UsersService {
     try {
       return await this.usersModel.findByIdAndUpdate(id, userDto, {
         new: true,
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async findOne(email: string): Promise<User | undefined> {
+    try {
+      return await this.usersModel.findOne({
+        email,
       });
     } catch (e) {
       throw new Error(e);
