@@ -41,7 +41,6 @@ export class UsersService {
       });
       return await newUser.save();
     } catch (e) {
-      console.log(e);
       throw new Error(e);
     }
   }

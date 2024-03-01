@@ -31,7 +31,7 @@ export class UsersController {
     return this.usersService.getByIdUser(id);
   }
 
-  @Post()
+  @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
   createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
