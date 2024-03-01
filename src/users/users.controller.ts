@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Users } from './schemas/users.schema';
+import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -20,24 +20,24 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAll(): Promise<Users[]> {
+  getAll(): Promise<User[]> {
     return this.usersService.getAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Promise<Users> {
+  getOne(@Param('id') id: string): Promise<User> {
     return this.usersService.getById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
-  create(@Body() createUserDto: CreateUserDto): Promise<Users> {
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<Users> {
+  remove(@Param('id') id: string): Promise<User> {
     return this.usersService.remove(id);
   }
 
@@ -45,7 +45,7 @@ export class UsersController {
   update(
     @Body() updateUserDto: UpdateUserDto,
     @Param('id') id: string,
-  ): Promise<Users> {
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 }
