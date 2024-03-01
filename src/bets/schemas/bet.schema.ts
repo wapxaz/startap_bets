@@ -12,7 +12,7 @@ export class Bet {
   description: string;
 
   @Prop({ required: true })
-  sum: string;
+  sum: number;
 
   @Prop({ default: now() })
   createdDate: Date;

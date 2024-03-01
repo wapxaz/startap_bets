@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { genSalt, hash } from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -74,6 +74,23 @@ export class UsersService {
       return await this.usersModel.findOne({
         email,
       });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  //проверка на сущестование и корректный ввод ид пользователя для бд mongo
+  async checkUserById(id: string): Promise<boolean> {
+    try {
+      //проверка на ид для mongo
+      if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+        throw new BadRequestException('Invalid entered id_user');
+      }
+      const user = await this.getByIdUser(id);
+      if (!user) {
+        throw new BadRequestException('Invalid entered id_user');
+      }
+      return true;
     } catch (e) {
       throw new Error(e);
     }

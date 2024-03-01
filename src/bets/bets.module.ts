@@ -12,5 +12,6 @@ import { UsersModule } from 'src/users/users.module';
     MongooseModule.forFeature([{ name: Bet.name, schema: BetSchema }]),
     UsersModule,
   ],
+  exports: [BetsService],
 })
 export class BetsModule {}

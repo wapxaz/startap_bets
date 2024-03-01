@@ -40,4 +40,12 @@ export class BetsController {
   createUser(@Body() createBetDto: CreateBetDto): Promise<Bet> {
     return this.betsService.createBet(createBetDto);
   }
+
+  //Получение списка всех пари, созданных конкретным пользователем.
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('users/:id_user')
+  getBidsByIdUser(@Param('id_user') id_user: string): Promise<Bet[]> {
+    return this.betsService.getBidsByIdUser(id_user);
+  }
 }
