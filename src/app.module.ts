@@ -26,6 +26,7 @@ import { BalancesModule } from './balances/balances.module';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         uri: config.get<string>('MONGODB_URI'),
+        useUnifiedTopology: true,
       }),
     }),
   ],

@@ -10,42 +10,44 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAll(): Promise<User[]> {
-    return this.usersService.getAll();
+  getAllUsers(): Promise<User[]> {
+    return this.usersService.getAllUsers();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.getById(id);
+  getByIdUser(@Param('id') id: string): Promise<User> {
+    return this.usersService.getByIdUser(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.createUser(createUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<User> {
-    return this.usersService.remove(id);
+  removeUser(@Param('id') id: string): Promise<User> {
+    return this.usersService.removeUser(id);
   }
 
   @Put(':id')
-  update(
+  updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @Param('id') id: string,
   ): Promise<User> {
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.updateUser(id, updateUserDto);
   }
 }
