@@ -22,6 +22,10 @@ export class CreateBetDto {
   @IsNumber()
   sum: number;
 
+  @ApiProperty({ required: false })
+  @IsOptional()
+  categories: string[] | null;
+
   @IsDateString()
   @IsOptional()
   createdDate: Date;

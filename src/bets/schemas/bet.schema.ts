@@ -14,6 +14,9 @@ export class Bet {
   @Prop({ required: true })
   sum: number;
 
+  @Prop({ default: null })
+  categories: string[] | null;
+
   @Prop({ default: now() })
   createdDate: Date;
 

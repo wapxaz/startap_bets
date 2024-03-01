@@ -48,4 +48,14 @@ export class BetsController {
   getBidsByIdUser(@Param('id_user') id_user: string): Promise<Bet[]> {
     return this.betsService.getBidsByIdUser(id_user);
   }
+
+  //Получить список пари данной категории, например футбол
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('category/:id_category')
+  getBetsByIdCategory(
+    @Param('id_category') id_category: string,
+  ): Promise<Bet[]> {
+    return this.betsService.getBetsByIdCategory(id_category);
+  }
 }

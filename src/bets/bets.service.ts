@@ -5,12 +5,14 @@ import { Bet } from './schemas/bet.schema';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UsersService } from 'src/users/users.service';
 import { checkIdForMongo } from 'src/tools/functions';
+import { CategoriesService } from 'src/categories/categories.service';
 
 @Injectable()
 export class BetsService {
   constructor(
     @InjectModel(Bet.name) private betsModel: Model<Bet>,
     private readonly usersService: UsersService,
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   async getAllBets(): Promise<Bet[]> {
@@ -37,6 +39,24 @@ export class BetsService {
       if (endDate.getTime() < nowDate.getTime()) {
         throw new BadRequestException('End date must be more than now');
       }
+      /*
+      TODO: добавить проверку на существование категорий
+      let existedCategories = [];
+      if (betDto.categories !== null) {
+        betDto.categories.forEach(async (c) => {
+          const tmpCategory = await this.categoriesService.checkCategoryById(c);
+          console.log(tmpCategory);
+          if (tmpCategory) {
+            existedCategories.push(c);
+          }
+        });
+      }
+      if (existedCategories.length === 0) {
+        existedCategories = null;
+      }
+      //добавление только существующих категорий
+      const newBetDto = { ...betDto, categories: existedCategories };
+      */
       const newBet = await new this.betsModel(betDto).save();
       return newBet;
     } catch (e) {
@@ -48,6 +68,22 @@ export class BetsService {
     try {
       await this.usersService.checkUserById(id_user);
       return await this.betsModel.find({ id_user });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async getBetsByIdCategory(id_category: string): Promise<Bet[]> {
+    try {
+      const existCategory =
+        await this.categoriesService.checkCategoryById(id_category);
+      if (!existCategory) {
+        throw new BadRequestException('Category not found');
+      }
+      const bets = await this.betsModel.find({
+        categories: { $in: [id_category] },
+      });
+      return bets;
     } catch (e) {
       throw new Error(e);
     }
