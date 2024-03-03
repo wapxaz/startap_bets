@@ -3,13 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { BetsModule } from './bets/bets.module';
-import { BidsModule } from './bids/bids.module';
-import { CategoriesModule } from './categories/categories.module';
-import { EvidencesModule } from './evidences/evidences.module';
-import { BalancesModule } from './balances/balances.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { BetsModule } from './modules/bets/bets.module';
+import { BidsModule } from './modules/bids/bids.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { EvidencesModule } from './modules/evidences/evidences.module';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { BalancesModule } from './balances/balances.module';
     BidsModule,
     CategoriesModule,
     EvidencesModule,
-    BalancesModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

@@ -34,8 +34,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // Throw an exceptions for either
     // MongoError, ValidationError, TypeError, CastError and Error
-    if (exception.message && status === 500) {
+    if (exception.name == 'BadRequestException') {
+      const messages = exception.getResponse()['message'];
+      responseMessage(exception.name, messages);
+    } else if (exception.message && status === 500) {
       responseMessage(exception.name, exception.message);
+    } else {
+      responseMessage(exception.name, 'Some error');
     }
   }
 }

@@ -21,8 +21,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  //конфликтует с с декораторами из dto - @IsEmail()
-  //app.useGlobalFilters(new AllExceptionsFilter());
+  //глобальный обработчик ошибок
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   await app.listen(3000);
 }
