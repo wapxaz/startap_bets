@@ -19,7 +19,8 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('docs', app, document);
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.useGlobalFilters(new exception_filters_filter_1.AllExceptionsFilter());
-    await app.listen(80);
+    app.enableCors();
+    await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
