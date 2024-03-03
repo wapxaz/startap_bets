@@ -24,6 +24,7 @@ async function bootstrap() {
   //глобальный обработчик ошибок
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(3000);
+  app.enableCors();
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
